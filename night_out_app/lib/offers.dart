@@ -15,7 +15,7 @@ class _OffersState extends State<Offers> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Offers',
+          'Offers for you',
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _OffersState extends State<Offers> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                'Today',
+                'Today Offers',
                 style: TextStyle(
                   color: _currentIndex == 0 ? Colors.white : Colors.black,
                 ),
