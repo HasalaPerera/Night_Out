@@ -41,7 +41,57 @@ class _OffersState extends State<Offers> {
     );
   }
 
-  
+    Widget _buildTopNavigationBar() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _currentIndex = 0;
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: _currentIndex == 0 ? Colors.purple : Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Today',
+                style: TextStyle(
+                  color: _currentIndex == 0 ? Colors.white : Colors.black,
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                _currentIndex = 1;
+              });
+            },
+            child: Container(
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: _currentIndex == 1 ? Colors.purple : Colors.transparent,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Text(
+                'Upcoming',
+                style: TextStyle(
+                  color: _currentIndex == 1 ? Colors.white : Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildEventSection() {
     if (_currentIndex == 0) {
