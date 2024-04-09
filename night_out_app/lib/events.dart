@@ -15,7 +15,7 @@ class _EventsState extends State<Events> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Events',
+          'Events For You',
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
