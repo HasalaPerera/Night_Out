@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 20),
                   Text(
-                    "Sign In",
+                    "Login",
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                 ],
@@ -54,10 +54,10 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: <Widget>[
                   inputFile(label: "Email"),
-                  SizedBox(height: 20), // Added SizedBox
-                  inputFile(label: "Password", obscureText: true), // Added comma
-                  SizedBox(height: 40), // Added SizedBox
-                  Container( // Wrapping Container around the MaterialButton
+                  SizedBox(height: 20),
+                  inputFile(label: "Password", obscureText: true), 
+                  SizedBox(height: 40), 
+                  Container( 
                     padding: EdgeInsets.only(top: 0, left: 0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
@@ -68,14 +68,14 @@ class _LoginPageState extends State<LoginPage> {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
-                      color: Color.fromRGBO(192, 118, 230, 1), // Removed 10 from alpha
+                      color: Color.fromRGBO(196, 130, 228, 1), 
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
                       onPressed: () {},
                       child: Text(
-                        "SIGN IN",
+                        "LOGIN",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 22,
@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextButton( 
                   onPressed: () {}, 
                   child: Text(
-                    "Sign up",
+                    "Register",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
