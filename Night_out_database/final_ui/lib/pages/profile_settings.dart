@@ -8,13 +8,13 @@ class ProfileSettingsPage extends StatefulWidget {
 }
 
 class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
-  TextEditingController _fullNameController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _districtController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
 
   late String _userId;
-  late String _imageUrl;
 
   @override
   void initState() {
@@ -28,9 +28,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     if (user != null) {
       setState(() {
         _userId = user.uid;
-        _fullNameController.text = user.displayName ?? '';
+        _usernameController.text = user.displayName ?? '';
         _emailController.text = user.email ?? '';
-        _imageUrl = user.photoURL ?? '';
       });
 
       DocumentSnapshot userData = await FirebaseFirestore.instance
@@ -48,10 +47,19 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   void _updateUserData() async {
     // Update user data in Firestore
     await FirebaseFirestore.instance.collection('users').doc(_userId).update({
-      'fullName': _fullNameController.text,
+      'username': _usernameController.text,
       'email': _emailController.text,
       'district': _districtController.text,
     });
+
+    // Update password if not empty
+    String password = _passwordController.text.trim();
+    if (password.isNotEmpty) {
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        await user.updatePassword(password);
+      }
+    }
 
     print('User data updated successfully');
   }
@@ -71,7 +79,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
           children: [
             SizedBox(height: 20),
             TextField(
-              controller: _fullNameController,
+              controller: _usernameController,
               decoration: InputDecoration(labelText: 'Full Name'),
             ),
             SizedBox(height: 10),
@@ -87,7 +95,13 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
             SizedBox(height: 10),
             TextField(
               controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(labelText: 'New Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: _confirmPasswordController,
+              decoration: InputDecoration(labelText: 'Confirm Password'),
               obscureText: true,
             ),
             SizedBox(height: 20),

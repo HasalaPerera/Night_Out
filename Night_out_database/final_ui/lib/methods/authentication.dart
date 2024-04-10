@@ -37,4 +37,13 @@ class AuthMethods {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  updateUserInfo(
+      {required String userId,
+      required String name,
+      required String email,
+      required String district,
+      required String password}) {}
+
+  getUserInfo() {}
 }

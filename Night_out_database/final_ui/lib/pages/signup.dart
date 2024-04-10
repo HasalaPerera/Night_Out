@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:final_ui/pages/sign%20in.dart';
 import 'package:final_ui/methods/authentication.dart';
+import 'package:flutter/widgets.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -62,7 +64,7 @@ class _SignupPageState extends State<SignupPage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -76,6 +78,16 @@ class _SignupPageState extends State<SignupPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 178, 55, 190),
+              ],
+            ),
+          ),
           padding: EdgeInsets.symmetric(horizontal: 40),
           height: MediaQuery.of(context).size.height - 50,
           width: double.infinity,
@@ -94,7 +106,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 1,
+                      height: 20,
                     ),
                   ],
                 ),
@@ -185,59 +197,66 @@ class _SignupPageState extends State<SignupPage> {
                   ],
                 ),
                 SizedBox(height: 20),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    border: Border.all(
-                      color: Colors.black,
-                    ),
-                  ),
-                  child: MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60,
-                    color: Color.fromRGBO(192, 118, 230, 1),
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
+                SingleChildScrollView(
+                  child: Container(
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
                     ),
-                    onPressed: signupUser,
-                    child: _isLoading
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: Color.fromRGBO(192, 118, 230, 1),
+                    child: MaterialButton(
+                      minWidth: double.infinity,
+                      height: 60,
+                      color: Color.fromRGBO(192, 118, 230, 1),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      onPressed: signupUser,
+                      child: _isLoading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                backgroundColor:
+                                    Color.fromRGBO(192, 118, 230, 1),
+                              ),
+                            )
+                          : Text(
+                              "Register",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 22,
+                                color: Colors.white,
+                              ),
                             ),
-                          )
-                        : Text(
-                            "Register",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Already have an account?"),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        );
-                      },
-                      child: Text(
-                        "Login",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 20,
+                SingleChildScrollView(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Already have an account?"),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()),
+                          );
+                        },
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               ],
             ),
