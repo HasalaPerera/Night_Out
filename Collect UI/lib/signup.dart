@@ -33,7 +33,7 @@ class SignupPage extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text("Sign up",
+                  Text("Register",
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -61,14 +61,14 @@ class SignupPage extends StatelessWidget {
                     child: MaterialButton(
                       minWidth: double.infinity,
                       height: 60,
-                      color: Color.fromRGBO(192, 118, 230, 1), // Removed 10 from alpha
+                      color: Color.fromRGBO(196, 130, 228, 1),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50),
                       ),
                       onPressed: () {},
                       child: Text(
-                        "SIGN UP",
+                        "REGISTER",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: 22,
@@ -81,10 +81,10 @@ class SignupPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("Already have an account?"),
-                TextButton( // Changed Text to TextButton for Sign up
-                  onPressed: () {}, // Add your sign-up functionality here
+                TextButton( 
+                  onPressed: () {},
                   child: Text(
-                    "Sign in",
+                    "Login",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 20,
