@@ -1,8 +1,10 @@
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
+
+import 'package:final_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:random_string/random_string.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:intl/intl.dart'; 
 
 class AddEvent extends StatefulWidget {
   const AddEvent({Key? key}) : super(key: key);
@@ -19,6 +21,16 @@ class _AddEventState extends State<AddEvent> {
   TextEditingController detailController = TextEditingController();
   File? selectedImage;
   final ImagePicker _picker = ImagePicker();
+  final EventMethods _eventMethods = EventMethods();
+
+  bool validateInputs() {
+    return selectedImage != null &&
+        nameController.text.isNotEmpty &&
+        dateController.text.isNotEmpty &&
+        locationController.text.isNotEmpty &&
+        ticketPriceController.text.isNotEmpty &&
+        detailController.text.isNotEmpty;
+  }
 
   Future getImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -32,18 +44,22 @@ class _AddEventState extends State<AddEvent> {
     });
   }
 
-  uploadEvent() async {
-    if (selectedImage != null &&
-        nameController.text.isNotEmpty &&
-        dateController.text.isNotEmpty &&
-        locationController.text.isNotEmpty &&
-        ticketPriceController.text.isNotEmpty &&
-        detailController.text.isNotEmpty) {
-      String eventId = randomAlphaNumeric(10);
+  Future<void> uploadEvent() async {
+  if (validateInputs()) {
+    try {
+      String eventId = generateRandomId();
+
+      // Parse date string into DateTime object
+      DateTime eventDate = DateTime.parse(dateController.text);
+
+      // Format date into a standardized format
+      String formattedDate = DateFormat('yyyy-MM-dd').format(eventDate);
+
 
       Reference firebaseStorageRef =
           FirebaseStorage.instance.ref().child("eventImages").child(eventId);
-      final UploadTask uploadTask = firebaseStorageRef.putFile(selectedImage!);
+      final UploadTask uploadTask =
+          firebaseStorageRef.putFile(selectedImage!);
       TaskSnapshot snapshot = await uploadTask;
 
       var downloadUrl = await snapshot.ref.getDownloadURL();
@@ -51,15 +67,13 @@ class _AddEventState extends State<AddEvent> {
       Map<String, dynamic> eventMap = {
         "Image": downloadUrl,
         "Name": nameController.text,
-        "Date": dateController.text,
+        "Date": formattedDate, // Use the formatted date
         "Location": locationController.text,
         "TicketPrice": ticketPriceController.text,
         "Detail": detailController.text,
       };
 
-      // Here you should add your logic to save the eventMap to Firebase
-      // For demonstration purposes, let's print the eventMap
-      print(eventMap);
+      await _eventMethods.uploadEvent(eventMap);
 
       // Clear all details after uploading
       nameController.clear();
@@ -71,24 +85,23 @@ class _AddEventState extends State<AddEvent> {
         selectedImage = null;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.orangeAccent,
-          content: Text(
-            "Event added successfully",
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-      );
+      showSnackBar(context, "Event added successfully");
+    } catch (e) {
+      print("Failed to upload event: $e");
+      showSnackBar(context, "Failed to add event");
     }
+  } else {
+    showSnackBar(context, "Please fill all details and Upload event banner");
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Creare Event',
+          'Create Event',
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
             fontWeight: FontWeight.bold,
@@ -110,9 +123,7 @@ class _AddEventState extends State<AddEvent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               GestureDetector(
-                onTap: () {
-                  getImage();
-                },
+                onTap: getImage,
                 child: selectedImage != null
                     ? Container(
                         width: MediaQuery.of(context).size.width,
@@ -179,9 +190,7 @@ class _AddEventState extends State<AddEvent> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
-                  uploadEvent();
-                },
+                onPressed: uploadEvent,
                 child: Text('Add Event'),
               ),
             ],

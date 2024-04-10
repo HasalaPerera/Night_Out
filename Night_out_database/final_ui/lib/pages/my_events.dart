@@ -12,7 +12,7 @@ class _My_eventsState extends State<My_events> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'My Events',
           style: TextStyle(
             color: Color.fromARGB(255, 0, 0, 0),
@@ -24,7 +24,7 @@ class _My_eventsState extends State<My_events> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context);
+            //Navigator.push(context, MaterialPageRoute(builder: (context)=>Events()));
           },
         ),
       ),

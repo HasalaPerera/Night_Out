@@ -1,13 +1,8 @@
 import 'package:final_ui/firebase_options.dart';
-import 'package:final_ui/pages/add_event.dart';
 import 'package:final_ui/pages/events.dart';
 import 'package:final_ui/pages/home.dart';
 import 'package:final_ui/pages/offers.dart';
 import 'package:final_ui/pages/profile.dart';
-import 'package:final_ui/pages/profile_settings.dart';
-import 'package:final_ui/pages/sign%20in.dart';
-import 'package:final_ui/pages/signup.dart';
-//import 'package:final_ui/pages/sign%20in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(), //LoginPage
+      home: MyAppHomePage(), //LoginPage
     );
   }
 }

@@ -1,9 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:final_ui/main.dart';
 import 'package:final_ui/pages/forgotpassword.dart';
-import 'package:final_ui/pages/home.dart';
 import 'package:final_ui/pages/signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -36,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
         },
       );
       // Automatically dismiss the dialog after 2 seconds
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(Duration(seconds: 2));
       Navigator.pop(context); // Dismiss the dialog
       // Navigate to home page after successful login
       Navigator.pushReplacement(
@@ -76,42 +75,30 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Night Out",
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "Login",
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                  ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 50),
+                Text(
+                  "Night Out",
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                child: Form(
+                SizedBox(height: 10),
+                Text(
+                  "Login",
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 50),
+                Form(
                   key: _formkey,
                   child: Column(
                     children: <Widget>[
@@ -123,7 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(labelText: "Email"),
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          border: OutlineInputBorder(),
+                        ),
                       ),
                       SizedBox(height: 20),
                       TextFormField(
@@ -134,96 +124,83 @@ class _LoginPageState extends State<LoginPage> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(labelText: "Password"),
+                        decoration: InputDecoration(
+                          labelText: "Password",
+                          border: OutlineInputBorder(),
+                        ),
                         obscureText: true,
                       ),
-                      SizedBox(height: 10), // Adjust the height as needed
+                      SizedBox(height: 10),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ForgotPassword()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ForgotPassword(),
+                            ),
+                          );
                         },
-                        child: Container(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.black,
-                              ),
-                            )),
-                      ),
-                      SizedBox(height: 38),
-                      Container(
-                        padding: EdgeInsets.only(top: 0, left: 0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(
+                        child: Text(
+                          "Forgot Password?",
+                          style: TextStyle(
+                            fontSize: 17,
                             color: Colors.black,
                           ),
                         ),
-                        child: MaterialButton(
-                          minWidth: double.infinity,
-                          height: 60,
-                          color: Color.fromRGBO(192, 118, 230, 1),
-                          elevation: 0,
+                      ),
+                      SizedBox(height: 38),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (_formkey.currentState!.validate()) {
+                            _signIn();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purple,
+                          minimumSize: Size(double.infinity, 60),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
                           ),
-                          onPressed: () {
-                            if (_formkey.currentState!.validate()) {
-                              _signIn();
-                            }
-                          },
-                          child: Text(
-                            "Login",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
+                        ),
+                        child: Text(
+                          "Login",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 22,
+                            color: Colors.white,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Don't have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => SignupPage()),
-                      );
-                      // Navigate to sign up page
-                    },
-                    child: Text(
-                      "Sign up",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Don't have an account?"),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignupPage(),
+                          ),
+                        );
+                        // Navigate to sign up page
+                      },
+                      child: Text(
+                        "Sign up",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 100),
-                height: 200,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/background.png"),
-                    fit: BoxFit.fitHeight,
-                  ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileSettingsPage extends StatefulWidget {
@@ -12,33 +13,50 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   TextEditingController _districtController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  // Function to update user data in Firebase
-  void _updateUserData() {
-    // Get current user ID (assuming you have a method to retrieve it)
-    String userId = getCurrentUserId();
+  late String _userId;
+  late String _imageUrl;
 
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
+
+  // Function to retrieve user data from Firestore
+  void _getUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        _userId = user.uid;
+        _fullNameController.text = user.displayName ?? '';
+        _emailController.text = user.email ?? '';
+        _imageUrl = user.photoURL ?? '';
+      });
+
+      DocumentSnapshot userData = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userId)
+          .get();
+
+      setState(() {
+        _districtController.text = userData['district'];
+      });
+    }
+  }
+
+  // Function to update user data in Firestore
+  void _updateUserData() async {
     // Update user data in Firestore
-    FirebaseFirestore.instance.collection('users').doc(userId).update({
+    await FirebaseFirestore.instance.collection('users').doc(_userId).update({
       'fullName': _fullNameController.text,
       'email': _emailController.text,
       'district': _districtController.text,
-    }).then((value) {
-      // Data updated successfully
-      // You can show a message or perform other actions
-      print('User data updated successfully');
-    }).catchError((error) {
-      // Handle errors if any
-      print('Failed to update user data: $error');
     });
 
-    // Optionally, update profile picture in Firebase Storage
+    print('User data updated successfully');
   }
 
-  // Dummy method to get current user ID
-  String getCurrentUserId() {
-    // Implement your logic to retrieve current user ID
-    return 'user123'; // For example
-  }
+  // Function to handle image selection and upload
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +69,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            SizedBox(height: 20),
             TextField(
               controller: _fullNameController,
               decoration: InputDecoration(labelText: 'Full Name'),
@@ -73,13 +92,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
             ),
             SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                (
-                  onPressed: _updateUserData,
-                  child: Text('Update Profile'),
-                );
-              },
-              child: Text('Update'),
+              onPressed: _updateUserData,
+              child: Text('Update Profile'),
             ),
           ],
         ),

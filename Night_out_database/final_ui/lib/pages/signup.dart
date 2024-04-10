@@ -1,11 +1,6 @@
-import 'dart:typed_data';
-
-import 'package:final_ui/methods/authentication.dart';
-import 'package:final_ui/pages/home.dart';
-import 'package:final_ui/pages/sign%20in.dart';
-import 'package:final_ui/utilities/utils.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:final_ui/pages/sign%20in.dart';
+import 'package:final_ui/methods/authentication.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -16,13 +11,12 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   String email = "", password = "", name = "", district = "";
+  bool _isLoading = false;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController districtController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  Uint8List? _image;
-  bool _isloading = false;
 
   @override
   void dispose() {
@@ -33,78 +27,33 @@ class _SignupPageState extends State<SignupPage> {
     passwordController.dispose();
   }
 
-  void signupuser() async {
-    String res = await authmethods().signupuser(
-      email: emailController.text,
-      password: passwordController.text,
-      username: nameController.text,
-      district: districtController.text,
-      file: _image!,
-    );
-    setState(() {
-      _isloading = false;
-    });
-    if (res != "success") {
-      showSnackBar(res, context);
-    } else {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: ((context) => const Home())),
+  void signupUser() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true;
+      });
+      String res = await AuthMethods().signUpUser(
+        email: emailController.text,
+        password: passwordController.text,
+        username: nameController.text,
+        district: districtController.text,
       );
+      setState(() {
+        _isLoading = false;
+      });
+      if (res != "Success") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(res),
+        ));
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: ((context) => const LoginPage())),
+        );
+      }
     }
   }
 
   final _formKey = GlobalKey<FormState>();
-
-  Future<void> register() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
-
-        // If user registration is successful, you can save additional data to Firestore here
-        // For simplicity, I'm not adding Firestore data saving in this example
-
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Color.fromARGB(255, 49, 145, 52),
-          content: Text(
-            "Registered Successfully",
-            style: TextStyle(fontSize: 20.0),
-          ),
-        ));
-
-        // Clear all text field controllers after successful registration
-        nameController.clear();
-        emailController.clear();
-        districtController.clear();
-        passwordController.clear();
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
-        );
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Color.fromARGB(255, 79, 78, 4),
-            content: Text(
-              "Password provided is too weak",
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ));
-        } else if (e.code == "email-already-in-use") {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Color.fromARGB(255, 160, 46, 46),
-            content: Text(
-              "Account already exists",
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ));
-        }
-      } catch (e) {
-        print(e.toString());
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,28 +108,39 @@ class _SignupPageState extends State<SignupPage> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(labelText: "Full Name"),
+                      decoration: InputDecoration(
+                        labelText: "Full Name",
+                        border: OutlineInputBorder(),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           name = value;
                         });
                       },
                     ),
+                    SizedBox(height: 20),
                     TextFormField(
                       controller: emailController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your email';
                         }
+                        if (!value.contains('@') || !value.contains('.')) {
+                          return 'Please enter a valid email';
+                        }
                         return null;
                       },
-                      decoration: InputDecoration(labelText: "Email"),
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        border: OutlineInputBorder(),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           email = value;
                         });
                       },
                     ),
+                    SizedBox(height: 20),
                     TextFormField(
                       controller: districtController,
                       validator: (value) {
@@ -189,22 +149,32 @@ class _SignupPageState extends State<SignupPage> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(labelText: "District"),
+                      decoration: InputDecoration(
+                        labelText: "District",
+                        border: OutlineInputBorder(),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           district = value;
                         });
                       },
                     ),
+                    SizedBox(height: 20),
                     TextFormField(
                       controller: passwordController,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
                         }
+                        if (value.length < 6) {
+                          return 'Password must be at least 6 characters long';
+                        }
                         return null;
                       },
-                      decoration: InputDecoration(labelText: "Password"),
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        border: OutlineInputBorder(),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           password = value;
@@ -214,8 +184,8 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
                 Container(
-                  padding: EdgeInsets.only(top: 0, left: 0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     border: Border.all(
@@ -230,14 +200,14 @@ class _SignupPageState extends State<SignupPage> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    onPressed: register,
-                    child: _isloading
-                        ? const Center(
+                    onPressed: signupUser,
+                    child: _isLoading
+                        ? Center(
                             child: CircularProgressIndicator(
                               backgroundColor: Color.fromRGBO(192, 118, 230, 1),
                             ),
                           )
-                        : const Text(
+                        : Text(
                             "Register",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -247,6 +217,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                   ),
                 ),
+                SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -257,7 +228,6 @@ class _SignupPageState extends State<SignupPage> {
                           context,
                           MaterialPageRoute(builder: (context) => LoginPage()),
                         );
-                        // Add your sign-in functionality here
                       },
                       child: Text(
                         "Login",
