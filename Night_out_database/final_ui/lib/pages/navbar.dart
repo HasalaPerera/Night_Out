@@ -10,7 +10,6 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
-        // Remove padding
         padding: EdgeInsets.zero,
         children: [
           const UserAccountsDrawerHeader(
@@ -30,7 +29,6 @@ class NavBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => Profile()),
               );
-              // Add functionality to navigate to settings screen
             },
           ),
           Divider(),
@@ -42,7 +40,6 @@ class NavBar extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (context) => AboutEmergencyPage()),
               );
-              // Add functionality to navigate to settings screen
             },
           ),
           Divider(),

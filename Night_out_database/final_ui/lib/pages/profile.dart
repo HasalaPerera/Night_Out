@@ -36,9 +36,7 @@ class _ProfileState extends State<Profile> {
     return userData['username'];
   }
 
-  void _updateUserData() {
-    // Implement your update logic here
-  }
+  void _updateUserData() {}
 
   @override
   Widget build(BuildContext context) {
@@ -102,10 +100,7 @@ class _ProfileState extends State<Profile> {
                           }
                         },
                       ),
-                      const SizedBox(
-                          height:
-                              10), // Add some space between the text and the button
-
+                      const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -116,7 +111,6 @@ class _ProfileState extends State<Profile> {
                                 MaterialPageRoute(
                                     builder: (context) => AddEvent()),
                               );
-                              // Add functionality for "Add Event" button
                             },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
@@ -151,7 +145,6 @@ class _ProfileState extends State<Profile> {
                                 MaterialPageRoute(
                                     builder: (context) => AddOffer()),
                               );
-                              // Add functionality for "Add Offer" button
                             },
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(

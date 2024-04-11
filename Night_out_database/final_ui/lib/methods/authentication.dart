@@ -19,7 +19,7 @@ class AuthMethods {
       );
       print(cred.user!.uid);
 
-      // Storing user data in Firestore
+      // Storing user data
       await _firestore.collection('users').doc(cred.user!.uid).set({
         'username': username,
         'district': district,

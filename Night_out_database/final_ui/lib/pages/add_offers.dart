@@ -76,8 +76,7 @@ class _AddOfferState extends State<AddOffer> {
         };
 
         await _offertMethods.uploadOffers(offerMap);
-        // Handle Firebase database operations here with offerMap
-        // For now, I'm just printing the offerMap
+
         print("Offer Details: $offerMap");
 
         // Clear all details after uploading

@@ -64,8 +64,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
     print('User data updated successfully');
   }
 
-  // Function to handle image selection and upload
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

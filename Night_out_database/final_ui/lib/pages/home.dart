@@ -71,7 +71,6 @@ class Home extends StatelessWidget {
                       ),
                       child: Stack(
                         children: [
-                          // Background decoration
                           Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -85,14 +84,13 @@ class Home extends StatelessWidget {
                               borderRadius: BorderRadius.circular(35),
                             ),
                           ),
-                          // Text with artistic modifications
                           Center(
                             child: Text(
                               "Explore your night !",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Pacifico', // Example font family
+                                fontFamily: 'Pacifico',
                                 fontSize: 34,
                                 shadows: [
                                   Shadow(
@@ -162,7 +160,6 @@ class SectionTitle extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              // Replace Offers() and Events() with your offers and events page routes
               if (title == 'New Events') {
                 Navigator.push(
                   context,
@@ -179,7 +176,7 @@ class SectionTitle extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(
                   8.0,
-                ), // Adjust the radius as needed
+                ),
               ),
             ),
             child: const Text(
@@ -336,9 +333,7 @@ class OfferSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<QuerySnapshot>(
-      future: FirebaseFirestore.instance
-          .collection('Offers')
-          .get(), // Corrected collection name to 'Offers'
+      future: FirebaseFirestore.instance.collection('Offers').get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
@@ -364,14 +359,14 @@ class OfferSection extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Image.network(
-                          data['Image'], // Corrected key to 'Image'
+                          data['Image'],
                           height: 100,
                           width: 150,
                           fit: BoxFit.cover,
                         ),
                         const SizedBox(height: 5.0),
                         Text(
-                          data['OfferTitle'], // Corrected key to 'OfferTitle'
+                          data['OfferTitle'],
                           style: const TextStyle(
                             color: Color.fromARGB(255, 0, 0, 0),
                             fontWeight: FontWeight.bold,
@@ -381,11 +376,11 @@ class OfferSection extends StatelessWidget {
                         ),
                         const SizedBox(height: 5.0),
                         Text(
-                          data['Date'], // Corrected key to 'Date'
+                          data['Date'],
                         ),
                         const SizedBox(height: 5.0),
                         Text(
-                          data['Location'], // Corrected key to 'Location'
+                          data['Location'],
                         ),
                         const SizedBox(height: 10.0),
                         ElevatedButton(

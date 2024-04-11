@@ -44,12 +44,6 @@ class _EventsState extends State<Offers> {
             fontSize: 25,
           ),
         ),
-//         leading: IconButton(
-//   icon: const Icon(Icons.arrow_back),
-//   onPressed: () {
-//     Navigator.popUntil(context, ModalRoute.withName('/')); // Navigate to the root page
-//   },
-// ),
       ),
       body: Column(
         children: <Widget>[
@@ -147,7 +141,6 @@ class _EventsState extends State<Offers> {
                 elevation: 5.0,
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
-                  // Wrap with Stack
                   children: [
                     Container(
                       padding: const EdgeInsets.all(5),
@@ -297,9 +290,7 @@ class _EventsState extends State<Offers> {
                       right: 5.0,
                       child: IconButton(
                         icon: const Icon(Icons.bookmark),
-                        onPressed: () {
-                          // Add functionality to remove the container here
-                        },
+                        onPressed: () {},
                       ),
                     ),
                   ],

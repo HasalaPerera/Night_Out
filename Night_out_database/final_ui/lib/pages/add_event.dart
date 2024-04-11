@@ -4,7 +4,7 @@ import 'package:final_ui/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 
 class AddEvent extends StatefulWidget {
   const AddEvent({Key? key}) : super(key: key);
@@ -45,56 +45,54 @@ class _AddEventState extends State<AddEvent> {
   }
 
   Future<void> uploadEvent() async {
-  if (validateInputs()) {
-    try {
-      String eventId = generateRandomId();
+    if (validateInputs()) {
+      try {
+        String eventId = generateRandomId();
 
-      // Parse date string into DateTime object
-      DateTime eventDate = DateTime.parse(dateController.text);
+        // Parse date string into DateTime object
+        DateTime eventDate = DateTime.parse(dateController.text);
 
-      // Format date into a standardized format
-      String formattedDate = DateFormat('yyyy-MM-dd').format(eventDate);
+        // Format date into a standardized format
+        String formattedDate = DateFormat('yyyy-MM-dd').format(eventDate);
 
+        Reference firebaseStorageRef =
+            FirebaseStorage.instance.ref().child("eventImages").child(eventId);
+        final UploadTask uploadTask =
+            firebaseStorageRef.putFile(selectedImage!);
+        TaskSnapshot snapshot = await uploadTask;
 
-      Reference firebaseStorageRef =
-          FirebaseStorage.instance.ref().child("eventImages").child(eventId);
-      final UploadTask uploadTask =
-          firebaseStorageRef.putFile(selectedImage!);
-      TaskSnapshot snapshot = await uploadTask;
+        var downloadUrl = await snapshot.ref.getDownloadURL();
 
-      var downloadUrl = await snapshot.ref.getDownloadURL();
+        Map<String, dynamic> eventMap = {
+          "Image": downloadUrl,
+          "Name": nameController.text,
+          "Date": formattedDate, // Use the formatted date
+          "Location": locationController.text,
+          "TicketPrice": ticketPriceController.text,
+          "Detail": detailController.text,
+        };
 
-      Map<String, dynamic> eventMap = {
-        "Image": downloadUrl,
-        "Name": nameController.text,
-        "Date": formattedDate, // Use the formatted date
-        "Location": locationController.text,
-        "TicketPrice": ticketPriceController.text,
-        "Detail": detailController.text,
-      };
+        await _eventMethods.uploadEvent(eventMap);
 
-      await _eventMethods.uploadEvent(eventMap);
+        // Clear all details after uploading
+        nameController.clear();
+        dateController.clear();
+        locationController.clear();
+        ticketPriceController.clear();
+        detailController.clear();
+        setState(() {
+          selectedImage = null;
+        });
 
-      // Clear all details after uploading
-      nameController.clear();
-      dateController.clear();
-      locationController.clear();
-      ticketPriceController.clear();
-      detailController.clear();
-      setState(() {
-        selectedImage = null;
-      });
-
-      showSnackBar(context, "Event added successfully");
-    } catch (e) {
-      print("Failed to upload event: $e");
-      showSnackBar(context, "Failed to add event");
+        showSnackBar(context, "Event added successfully");
+      } catch (e) {
+        print("Failed to upload event: $e");
+        showSnackBar(context, "Failed to add event");
+      }
+    } else {
+      showSnackBar(context, "Please fill all details and Upload event banner");
     }
-  } else {
-    showSnackBar(context, "Please fill all details and Upload event banner");
   }
-}
-
 
   @override
   Widget build(BuildContext context) {

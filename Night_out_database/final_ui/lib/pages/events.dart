@@ -44,12 +44,6 @@ class _EventsState extends State<Events> {
             fontSize: 25,
           ),
         ),
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back),
-        //   onPressed: () {
-        //     Navigator.push(context, MaterialPageRoute(builder: (context)=>Home()));
-        //   },
-        // ),
       ),
       body: Column(
         children: <Widget>[
@@ -147,7 +141,6 @@ class _EventsState extends State<Events> {
                 elevation: 5.0,
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
-                  // Wrap with Stack
                   children: [
                     Container(
                       padding: const EdgeInsets.all(5),
@@ -270,9 +263,7 @@ class _EventsState extends State<Events> {
                       right: 5.0,
                       child: IconButton(
                         icon: const Icon(Icons.bookmark),
-                        onPressed: () {
-                          // Add functionality to remove the container here
-                        },
+                        onPressed: () {},
                       ),
                     ),
                   ],

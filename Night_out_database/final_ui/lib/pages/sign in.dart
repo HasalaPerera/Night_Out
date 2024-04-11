@@ -38,8 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       // Automatically dismiss the dialog after 2 seconds
       await Future.delayed(Duration(seconds: 2));
-      Navigator.pop(context); // Dismiss the dialog
-      // Navigate to home page after successful login
+      Navigator.pop(context);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyAppHomePage()),
@@ -101,8 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: SizedBox(
                       width: 140,
                       height: 140,
-                      child: Image.asset(
-                          'assets/logoim.png'), // Adjust logo size here
+                      child: Image.asset('assets/logoim.png'),
                     ),
                   ),
                   SizedBox(height: 30),
@@ -221,7 +219,6 @@ class _LoginPageState extends State<LoginPage> {
                               builder: (context) => SignupPage(),
                             ),
                           );
-                          // Navigate to sign up page
                         },
                         child: Text(
                           "Sign up",

@@ -77,9 +77,7 @@ class _My_eventsState extends State<My_events> {
                         ),
                         SizedBox(height: 5.0),
                         ElevatedButton(
-                          onPressed: () {
-                            // Add your button functionality here
-                          },
+                          onPressed: () {},
                           child: Text('View'),
                         ),
                       ],
@@ -93,9 +91,7 @@ class _My_eventsState extends State<My_events> {
               right: 5.0,
               child: IconButton(
                 icon: Icon(Icons.highlight_remove_rounded),
-                onPressed: () {
-                  // Add functionality to remove the container here
-                },
+                onPressed: () {},
               ),
             ),
           ],

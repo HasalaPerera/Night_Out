@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EventMethods {
   final CollectionReference _offerCollection =
-      FirebaseFirestore.instance.collection('Offers'); // Updated collection name
+      FirebaseFirestore.instance.collection('Offers'); //collection name
 
   Future<void> uploadOffer(Map<String, dynamic> offerMap) async {
     try {
